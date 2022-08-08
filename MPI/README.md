@@ -1,63 +1,39 @@
 # MPI
 
-Este respositório apresenta os códigos fontes utilizados no livro de 
-Programação Paralela - Editora Casa do Código - 2022. Adicionalmente 
-apresentamos um texto de apoio para a preparação do ambiente de 
-execução.
+This repository presents the source codes used in the course of Costa Rica High Performance Computing
+School 2002. Additionally we present a support text for the preparation of the MPI execution environment.
 
-## Preparação do ambiente de execução MPI
+## MPI executing environment setup
 
-Apresentamos aqui um breve roteiro sobre a instalação e configuração da
-biblioteca MPI, assim como executar um programa MPI em algumas
-distribuições de sistemas operacionais Posix.
+We present here a brief guide on installing and configuring the
+MPI library, as well as running an MPI program on some
+Posix operating system distributions.
 
-### Introdução 
+### Introduction
 
-Primeiro devemos considerar que há várias implementações disponíveis
-para o MPI, algumas gratuitas e outras comerciais. O processador e a
-rede de interconexão utilizados pelo sistema onde as aplicações serão
-executadas são alguns dos fatores a serem considerados na escolha da
-distribuição adequada de MPI. Eventualmente, algumas distribuições
-suportam mais de um tipo de processador ou de interface de rede, o que
-lhes confere uma possibilidade maior de adequação às características do
-seu ambiente.
+At first, we must consider that there are several implementations available for MPI, some of them free and other commercial. The processor and the interconnection network used by the system where the applications will be executed are some of the factors to be considered when choosing the appropriate distribution of MPI. Eventually, some distributions support more than one type of processor or network interface, which gives them a greater possibility of adapting to the characteristics of your system.
 
-É importante observar que a arquitetura dos processadores muda de
-geração para geração, com a inclusão de novas instruções e facilidades.
-Uma tendência muito comum tem sido a melhoria das capacidade de
-processamento vetorial do processadores, o que tem grande impacto no
-desempenho final das aplicações científicas.
 
-Alguns compiladores comerciais, como o Intel e PGI, podem gerar código
-otimizado para diferentes arquiteturas de processadores em um único
-executável, aliviando a necessidade de geração de códigos binários
-separados para cada tipo de processador. O compilador de código aberto
-GNU só tem suporte para essa facilidade nas versões mais recentes. A
-seguir algumas das distribuições mais importantes:
+It is important to note that processor architectures change from generation to generation, with the inclusion of new instructions and facilities.
+A very common trend has been to improve the ability to processor vector processing, which has a great impact on the final performance of scientific applications.
 
--   OpenMPI - Mantida por um conjunto de diversos parceiros da área
-    acadêmica, de pesquisa e da indústria, incluindo AMD, Bull, Cisco
-    Systems, Centro de Computação de Alto Desempenho de Stuttgart
-    (HLRS), IBM, Intel, Laboratório Nacional de Los Alamos e NVIDIA.
-    Disponível em <https://www.open-mpi.org/>
+Some commercial compilers, such as Intel and PGI, can generate code optimized for different processor architectures in a single executable, alleviating the need to generate separate binary code for each processor type. The open source compiler GNU only supports this facility in newer versions. Here are some of the most important distributions:
 
--   MPICH - Mantida também por um conjunto de parceiros da área
-    acadêmica, de pesquisa e da indústria. Tem como alvo sistemas de
-    alto desempenho e suporta diversos compiladores, tais como GNU, LLVM
-    Clang, Intel, PGI e Sun Studio. Disponível em
-    <http://www.mpich.org/>
+-   OpenMPI - Maintained by a group of different partners in the academic, research and industry area including AMD, Bull, Cisco Systems, Stuttgart High Performance Computing Center (HLRS), IBM, Intel, Los Alamos National Laboratory and NVIDIA. Available at <https://www.open-mpi.org/>
 
--   MVAPICH2 - É uma implementação derivada da MPICH e mantida pela
-    Universidade Estadual de Ohio voltada para aplicações de alto
-    desempenho com uso de redes de interconexão tais como
-    OpenFabrics-IB, Omni-Path, OpenFabrics-iWARP, PSM e TCP/IP.
-    Disponível em <http://mvapich.cse.ohio-state.edu/>
+-   MPICH - It is also maintained by a group of partners from the academic, research and industry areas. It targets high performance systems and supports various compilers such as GNU, LLVM, Clang, Intel, PGI and Sun Studio. Available at <http://www.mpich.org/>
 
--   Intel® MPI Library - uma biblioteca de troca de mensagens que
-    implementa a especificação MPICH de código aberto. Mantida e
-    distribuída pela Intel. Possui uma versão gratuita para estudantes,
-    acadêmicos e pesquisadores. Disponível em
-    <https://software.intel.com/en-us/qualify-for-free-software>
+-   MVAPICH2 - It is an implementation derived from MPICH and maintained by
+     Ohio State University focused on high-end applications
+     performance using interconnection networks such as
+     OpenFabrics-IB, Omni-Path, OpenFabrics-iWARP, PSM and TCP/IP.
+     Available at <http://mvapich.cse.ohio-state.edu/>
+
+-   Intel® MPI Library - It is a message exchange library that
+     implements the open source MPICH specification, which is maintained and
+     distributed by Intel. It has a free version for students,
+     academics and researchers. Available in
+     <https://software.intel.com/en-us/qualify-for-free-software>
 
 O uso de programas paralelos adiciona um fator de complexidade relativo
 ao tipo de rede de interconexão utilizada pelo sistema de computação no
