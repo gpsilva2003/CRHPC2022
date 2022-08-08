@@ -35,79 +35,35 @@ Some commercial compilers, such as Intel and PGI, can generate code optimized fo
      academics and researchers. Available in
      <https://software.intel.com/en-us/qualify-for-free-software>
 
-O uso de programas paralelos adiciona um fator de complexidade relativo
-ao tipo de rede de interconexão utilizada pelo sistema de computação no
-qual o programa paralelo MPI vai ser executado. A maioria das
-implementações atuais do MPI inclui suporte para diversos tipos de rede
-em único programa executável, de modo que ele possa ser executado com
-diferentes tipos de rede de interconexão sem necessidade de
-recompilação.
+The use of parallel programs adds a complexity factor relative to the type of interconnection network used by the computing system on which the MPI parallel program will be executed. Most current implementations of MPI include support for multiple network types in a single executable program, so that it can run with different types of interconnect network without recompilation.
 
-Dependendo do seu equipamento, de sua aplicação e dos recursos
-disponíveis, uma implementação pode ser melhor do que a outra.
-Essas distribuições evoluem ao longo do tempo mas, no momento da redação
-deste livro, as características a seguir podem ser destacadas.
+Depending on your equipment, application and features available, one implementation may be better than the other. These distributions evolve over time, but at the time of writing, the following characteristics can be highlighted.
 
-O OpenMPI é bastante flexível em termos de plataformas de *hardware*,
-com suporte para Infiniband, mas o desempenho global é ligeiramente
-inferior ao de outras implementações como Intel MPI e MVAPICH2. O
-OpenMPI também suporta a rede Cray Gemini, mas não é uma implementação
-oficialmente suportada pela Cray.
+OpenMPI is quite flexible in terms of *hardware* platforms, with support for Infiniband, but the overall performance is slightly lower than other implementations like Intel MPI and MVAPICH2. OpenMPI also supports the Cray Gemini network, but it is not an implementation officially supported by Cray.
 
-O MPICH é uma implementação de referência, sendo considerada uma das
-implementações mais populares do padrão MPI, servindo de base para uma
-série de implementações derivadas como IBM MPI, Cray MPI, Intel MPI e
-MVAPICH, entre outras. Contudo, o seu suporte para InfiniBand é
-precário, ao contrário do OpenMPI. Mas suas variantes como Intel MPI e o
-MVAPICH2 possuem um suporte bastante eficiente para InfiniBand. Se
-considerarmos o conjunto da MPICH e suas variantes, o suporte de rede é
-extremamente variado, incluindo tanto o InfiniBand e redes de
-interconexão proprietárias como Cray Seastar, Gemini e Áries, como
-o IBM Blue Gene (/L, /P e /Q).
+MPICH is a reference implementation, being considered one of the most popular implementations of the MPI standard, serving as the basis for a series of derived implementations such as IBM MPI, Cray MPI, Intel MPI and MVAPICH, among others. However, its support for InfiniBand is poor, unlike OpenMPI. But its variants like Intel MPI and MVAPICH2 have quite efficient support for InfiniBand. If we consider the MPICH suite and its variants, the network support is extremely varied, including both InfiniBand and proprietary interconnect networks such as Cray Seastar, Gemini and Aries, such as IBM Blue Gene (/L, /P and /Q).
 
-O MVAPICH2 é otimizado para InfiniBand, mas ele não tem uma boa
-afinidade entre processos e cores em ambientes com múltiplas *threads*.
+MVAPICH2 is optimized for InfiniBand, but it doesn't have a good affinity between processes and cores in environments with multiple *threads*.
 
-O Intel MPI tem bom desempenho e bastante flexibilidade de uso, quanto
-aos tipos de processadores e redes suportadas, mas é um produto
-comercial que requer a aquisição de uma licença de uso. Além da
-Microsoft, é a única implementação MPI com suporte para o sistema
-operacional Windows.
+Intel MPI has good performance and a lot of flexibility in terms of the types of processors and networks supported, but it is a commercial product that requires the purchase of a license to use it. Other than Microsoft, it is the only supported MPI implementation for the Windows operating system.
 
-Em um eixo ortogonal ao suporte da plataforma de *hardware*, encontramos
-a cobertura do padrão MPI. Nesse sentido, a implementação MPICH é de
-longe muito superior. O MPICH foi a primeira implementação a suportar
-cada lançamento do padrão MPI, desde a versão MPI-1 até a MPI-3. O
-OpenMPI só recentemente suporta a versão MPI-3 e ainda assim
-parcialmente (não tem suporte para o formato "external32" do MPI I/O,
-por exemplo) e apresenta problemas em algumas plataformas. Tanto o
-OpenMPI como o MPICH possuem suporte completo para o
-MPI_THREAD_MULTIPLE, ou seja, se o processo é "multithreaded", múltiplas
-*threads* podem usar a biblioteca MPI sem restrições.
+On an axis orthogonal to the support of the *hardware* platform, we find the coverage of the MPI standard. In this sense, the MPICH implementation is far superior. MPICH was the first implementation to support every release of the MPI standard, from MPI-1 to MPI-3. OpenMPI only recently supports the MPI-3 version and even then partially (it doesn't support the "external32" format of MPI I/O, for example) and has problems on some platforms. Both OpenMPI and MPICH have full support for MPI_THREAD_MULTIPLE, ie if the process is "multithreaded", multiple *threads* can use the MPI library without restrictions.
 
-Finalmente, em termos de gerenciamento de processos, onde o OpenMPI era
-bem melhor há algum tempo atrás, agora o novo gerenciador de processos
-do MPICH, o Hydra, é tão bom e tem a mesma usabilidade e facilidades que
-o ORTE, do OpenMPI. O velho gerenciado do MPICH, chamado MPD, era
-difícil de usar e sem muitas opções, mas foi tornado obsoleto já há
-alguns anos.
+Finally, in terms of process management, where OpenMPI was much better some time ago, now MPICH's new process manager, Hydra, is just as good and has the same usability and facilities as OpenMPI's ORTE. The old MPICH managed, called MPD, was difficult to use and without many options, but it was deprecated a few years ago.
+More information about OpenMPI and MPICH can be found at
+<https://github.com/open-mpi/ompi/blob/master/README.md> and
+<https://www.mpich.org/documentation/guides/>, respectively
 
-Maiores informações sobre o OpenMPI e MPICH podem ser obtidas em
-<https://github.com/open-mpi/ompi/blob/master/README.md> e
-<https://www.mpich.org/documentation/guides/>, respectivamente.
+### Instalation
 
-### Instalação 
+Let's consider how to install and configure both
+most major distributions available as code software
+open and free: OpenMPI and MPICH. Fortunately most of
+Linux distributions already have packages available for installing these versions, which makes this task much easier.
 
-Vamos considerar como instalar e configurar as duas
-distribuições mais importantes disponíveis como software de código
-aberto e gratuitas: OpenMPI e MPICH. Felizmente a maioria das
-distribuições Linux já conta pacotes disponíveis para instalação dessas
-versões, o que torna muito mais fácil esta tarefa.
+#### Fedora, CentOS and similar ones 
 
-#### Fedora, CentOS e similares 
-
-Basicamente, os diversos tipos de implementação MPI podem ser instalados
-diretamente a partir do repositório:
+Basically, the various types of MPI implementations can be installed directly from the repository.
 
 -   **OpenMPI**
 
@@ -123,11 +79,11 @@ diretamente a partir do repositório:
     $ sudo dnf install mpich-devel
     ```
 
-#### Ubuntu, Debian e similares
+#### Ubuntu, Debian and similar ones
 
 -   **OpenMPI**
 
-    Basicamente, instalar o OpenMPI do repositório:
+    Basically, install OpenMPI from repository:
 
     ``` {}
     $ sudo apt-get install openmpi-bin
@@ -149,9 +105,9 @@ diretamente a partir do repositório:
 
 -   **OpenMPI**
 
-    A instalação automatizada do OpenMPI é possível no MacOS com a
-    instalação do programa *homebrew*, no endereço <https://brew.sh/>,
-    com o seguinte comando:
+ Automated installation of OpenMPI is possible on MacOS with the
+     *homebrew* program installation, at <https://brew.sh/>,
+     with the following command:
 
     ``` {}
     $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -165,15 +121,15 @@ diretamente a partir do repositório:
 
 -   **MPICH**
 
-    A instalação automatizada do MPICH é possível no MacOS com a
-    instalação do programa *homebrew*, no endereço <https://brew.sh/>,
-    com o seguinte comando:
+    Automated installation of MPICH is possible on MacOS with the
+     *homebrew* program installation, at <https://brew.sh/>,
+     with the following command:
 
     ``` {}
     $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-    E então digitar o seguinte comando:
+And then type the following command:
 
     ``` {}
     $ brew install mpich
@@ -181,12 +137,10 @@ diretamente a partir do repositório:
 
 #### Windows
 
-No Windows, a opção preferencial é usar o emulador de terminal Cygwin ou o Windows Subsystem 
-para Linux (WSL) para Windows 10. Ambos fornecem uma interface semelhante à maioria dos clusters HPC.
+On Windows, the preferred option is to use the Cygwin terminal emulator or Windows Subsystem for Linux (WSL) for Windows 10. Both provide an interface similar to most HPC clusters.
 
-Se você decidir usar o Cygwin, precisará instalar alguns pacotes usando o instalador do Cygwin. 
-Se você já tem o Cygwin instalado, você deve executar o instalador e certificar-se de que os 
-seguintes pacotes estejam selecionados:
+If you decide to use Cygwin, you will need to install some packages using the Cygwin installer.
+If you already have Cygwin installed, you should run the installer and make sure the following packages are selected:
 
     - gcc-core e gcc-fortran
     - openmpi, libopenmpi40, libopenmpihf08_40, libopenmpiusef08_40, openmpi-devel e openmpi-devel.
@@ -195,39 +149,34 @@ seguintes pacotes estejam selecionados:
     - git
     - vim ou seu editor de texto preferido
 
-Você pode verificar se funciona compilando qualquer programa C ou Fortran usando o compilador *mpicc* ou *mpifort*.
+You can verify if it works by compiling any C or Fortran program using the *mpicc* or *mpifort* compiler.
 
-No Windows, se você usar o Visual Studio, poderá instalar o Microsoft MPI. O download inclui dois arquivos, 
-*msmpisetup.exe* e *msmpisdk.msi*. Baixe e execute os dois instaladores. Siga estas instruções para criar um projeto 
-com o compilador e a biblioteca MPI.
+On Windows, if you use Visual Studio, you can install Microsoft MPI. The download includes two files,
+*msmpisetup.exe* and *msmpisdk.msi*. Download and run both installers. Follow these instructions to create a project
+with the compiler and the MPI library.
+
+Also, you can use WSL as an option too. But in this case you must follow the instructions according to the Linux distribution used. 
+See more information on <https://docs.microsoft.com/en-us/windows/wsl/install>.
 
 ### Compilação 
 
-Para compilar um arquivo fonte prog.c, digite:
-
+To compile a source file name *prog.c*, type:
 ``` {}
 $ mpicc -o prog prog.c
 ```
 
-Para compilar um arquivo em Fortran, os seguintes comandos são
-possíveis:
+To compile a file in Fortran, the following commands are possible:
 
 ``` {}
 $ mpif77 -o prog prog.f
 $ mpif90 -o prog prog.f90
 ```
 
-### Configurando o SSH 
+### Configuring  SSH 
 
-Para a execução em ambientes com um pequeno número de máquinas
-conectadas via rede, é importante configurar o ambiente para que não
-seja necessário o uso de senhas cada vez que executarmos um comando em
-outra máquina. Para isso, deve-se criar e configurar o uso de chaves SSH
-para todas as máquinas da rede. Neste exemplo, assumimos que existem 2
-máquinas nomeadas como *maquina1* e *maquina2*, e um nome de usuário
-*gabriel*.
+To run in environments with a small number of machines connected via the network, it is important to configure the environment so that it is not necessary to use passwords each time we execute a command on another machine. For this, you must create and configure the use of SSH keys for all machines on the network. In this example, we assume that there are 2 machines named *machine1* and *machine2*, and a username *gabriel*.
 
-Primeiro criamos o diretório \$HOME/.ssh com o comando:
+First we create the \$HOME/.ssh directory with the command:
 
 ``` {}
 maquina1:~$ mkdir $HOME/.ssh
