@@ -1,3 +1,3 @@
-#SERIAL
+# Serial Code
 
-Serial code
+The sequential version of the codes are stores here.

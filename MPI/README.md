@@ -1,137 +1,58 @@
 # MPI
 
-Este respositório apresenta os códigos fontes utilizados no livro de 
-Programação Paralela - Editora Casa do Código - 2022. Adicionalmente 
-apresentamos um texto de apoio para a preparação do ambiente de 
-execução.
+This repository presents the source codes used in the course of Costa Rica High Performance Computing School 2002. Additionally we present a support text for the preparation of the MPI execution environment, as well as running an MPI program on some Posix operating system distributions.
 
-## Preparação do ambiente de execução MPI
+## Introduction
 
-Apresentamos aqui um breve roteiro sobre a instalação e configuração da
-biblioteca MPI, assim como executar um programa MPI em algumas
-distribuições de sistemas operacionais Posix.
+At first, we must consider that there are several implementations available for MPI, some of them free and other commercial. The processor and the interconnection network used by the system where the applications will be executed are some of the factors to be considered when choosing the appropriate distribution of MPI. Eventually, some distributions support more than one type of processor or network interface, which gives them a greater possibility of adapting to the characteristics of your system.
 
-### Introdução 
 
-Primeiro devemos considerar que há várias implementações disponíveis
-para o MPI, algumas gratuitas e outras comerciais. O processador e a
-rede de interconexão utilizados pelo sistema onde as aplicações serão
-executadas são alguns dos fatores a serem considerados na escolha da
-distribuição adequada de MPI. Eventualmente, algumas distribuições
-suportam mais de um tipo de processador ou de interface de rede, o que
-lhes confere uma possibilidade maior de adequação às características do
-seu ambiente.
+It is important to note that processor architectures change from generation to generation, with the inclusion of new instructions and facilities.
+A very common trend has been to improve the ability to processor vector processing, which has a great impact on the final performance of scientific applications.
 
-É importante observar que a arquitetura dos processadores muda de
-geração para geração, com a inclusão de novas instruções e facilidades.
-Uma tendência muito comum tem sido a melhoria das capacidade de
-processamento vetorial do processadores, o que tem grande impacto no
-desempenho final das aplicações científicas.
+Some commercial compilers, such as Intel and PGI, can generate code optimized for different processor architectures in a single executable, alleviating the need to generate separate binary code for each processor type. The open source compiler GNU only supports this facility in newer versions. Here are some of the most important distributions:
 
-Alguns compiladores comerciais, como o Intel e PGI, podem gerar código
-otimizado para diferentes arquiteturas de processadores em um único
-executável, aliviando a necessidade de geração de códigos binários
-separados para cada tipo de processador. O compilador de código aberto
-GNU só tem suporte para essa facilidade nas versões mais recentes. A
-seguir algumas das distribuições mais importantes:
+-   OpenMPI - Maintained by a group of different partners in the academic, research and industry area including AMD, Bull, Cisco Systems, Stuttgart High Performance Computing Center (HLRS), IBM, Intel, Los Alamos National Laboratory and NVIDIA. Available at <https://www.open-mpi.org/>
 
--   OpenMPI - Mantida por um conjunto de diversos parceiros da área
-    acadêmica, de pesquisa e da indústria, incluindo AMD, Bull, Cisco
-    Systems, Centro de Computação de Alto Desempenho de Stuttgart
-    (HLRS), IBM, Intel, Laboratório Nacional de Los Alamos e NVIDIA.
-    Disponível em <https://www.open-mpi.org/>
+-   MPICH - It is also maintained by a group of partners from the academic, research and industry areas. It targets high performance systems and supports various compilers such as GNU, LLVM, Clang, Intel, PGI and Sun Studio. Available at <http://www.mpich.org/>
 
--   MPICH - Mantida também por um conjunto de parceiros da área
-    acadêmica, de pesquisa e da indústria. Tem como alvo sistemas de
-    alto desempenho e suporta diversos compiladores, tais como GNU, LLVM
-    Clang, Intel, PGI e Sun Studio. Disponível em
-    <http://www.mpich.org/>
+-   MVAPICH2 - It is an implementation derived from MPICH and maintained by
+     Ohio State University focused on high-end applications
+     performance using interconnection networks such as
+     OpenFabrics-IB, Omni-Path, OpenFabrics-iWARP, PSM and TCP/IP.
+     Available at <http://mvapich.cse.ohio-state.edu/>
 
--   MVAPICH2 - É uma implementação derivada da MPICH e mantida pela
-    Universidade Estadual de Ohio voltada para aplicações de alto
-    desempenho com uso de redes de interconexão tais como
-    OpenFabrics-IB, Omni-Path, OpenFabrics-iWARP, PSM e TCP/IP.
-    Disponível em <http://mvapich.cse.ohio-state.edu/>
+-   Intel® MPI Library - It is a message exchange library that
+     implements the open source MPICH specification, which is maintained and
+     distributed by Intel. It has a free version for students,
+     academics and researchers. Available in
+     <https://software.intel.com/en-us/qualify-for-free-software>
 
--   Intel® MPI Library - uma biblioteca de troca de mensagens que
-    implementa a especificação MPICH de código aberto. Mantida e
-    distribuída pela Intel. Possui uma versão gratuita para estudantes,
-    acadêmicos e pesquisadores. Disponível em
-    <https://software.intel.com/en-us/qualify-for-free-software>
+The use of parallel programs adds a complexity factor relative to the type of interconnection network used by the computing system on which the MPI parallel program will be executed. Most current implementations of MPI include support for multiple network types in a single executable program, so that it can run with different types of interconnect network without recompilation.
 
-O uso de programas paralelos adiciona um fator de complexidade relativo
-ao tipo de rede de interconexão utilizada pelo sistema de computação no
-qual o programa paralelo MPI vai ser executado. A maioria das
-implementações atuais do MPI inclui suporte para diversos tipos de rede
-em único programa executável, de modo que ele possa ser executado com
-diferentes tipos de rede de interconexão sem necessidade de
-recompilação.
+Depending on your equipment, application and features available, one implementation may be better than the other. These distributions evolve over time, but at the time of writing, the following characteristics can be highlighted.
 
-Dependendo do seu equipamento, de sua aplicação e dos recursos
-disponíveis, uma implementação pode ser melhor do que a outra.
-Essas distribuições evoluem ao longo do tempo mas, no momento da redação
-deste livro, as características a seguir podem ser destacadas.
+OpenMPI is quite flexible in terms of *hardware* platforms, with support for Infiniband, but the overall performance is slightly lower than other implementations like Intel MPI and MVAPICH2. OpenMPI also supports the Cray Gemini network, but it is not an implementation officially supported by Cray.
 
-O OpenMPI é bastante flexível em termos de plataformas de *hardware*,
-com suporte para Infiniband, mas o desempenho global é ligeiramente
-inferior ao de outras implementações como Intel MPI e MVAPICH2. O
-OpenMPI também suporta a rede Cray Gemini, mas não é uma implementação
-oficialmente suportada pela Cray.
+MPICH is a reference implementation, being considered one of the most popular implementations of the MPI standard, serving as the basis for a series of derived implementations such as IBM MPI, Cray MPI, Intel MPI and MVAPICH, among others. However, its support for InfiniBand is poor, unlike OpenMPI. But its variants like Intel MPI and MVAPICH2 have quite efficient support for InfiniBand. If we consider the MPICH suite and its variants, the network support is extremely varied, including both InfiniBand and proprietary interconnect networks such as Cray Seastar, Gemini and Aries, such as IBM Blue Gene (/L, /P and /Q).
 
-O MPICH é uma implementação de referência, sendo considerada uma das
-implementações mais populares do padrão MPI, servindo de base para uma
-série de implementações derivadas como IBM MPI, Cray MPI, Intel MPI e
-MVAPICH, entre outras. Contudo, o seu suporte para InfiniBand é
-precário, ao contrário do OpenMPI. Mas suas variantes como Intel MPI e o
-MVAPICH2 possuem um suporte bastante eficiente para InfiniBand. Se
-considerarmos o conjunto da MPICH e suas variantes, o suporte de rede é
-extremamente variado, incluindo tanto o InfiniBand e redes de
-interconexão proprietárias como Cray Seastar, Gemini e Áries, como
-o IBM Blue Gene (/L, /P e /Q).
+MVAPICH2 is optimized for InfiniBand, but it doesn't have a good affinity between processes and cores in environments with multiple *threads*.
 
-O MVAPICH2 é otimizado para InfiniBand, mas ele não tem uma boa
-afinidade entre processos e cores em ambientes com múltiplas *threads*.
+Intel MPI has good performance and a lot of flexibility in terms of the types of processors and networks supported, but it is a commercial product that requires the purchase of a license to use it. Other than Microsoft, it is the only supported MPI implementation for the Windows operating system.
 
-O Intel MPI tem bom desempenho e bastante flexibilidade de uso, quanto
-aos tipos de processadores e redes suportadas, mas é um produto
-comercial que requer a aquisição de uma licença de uso. Além da
-Microsoft, é a única implementação MPI com suporte para o sistema
-operacional Windows.
+On an axis orthogonal to the support of the *hardware* platform, we find the coverage of the MPI standard. In this sense, the MPICH implementation is far superior. MPICH was the first implementation to support every release of the MPI standard, from MPI-1 to MPI-3. OpenMPI only recently supports the MPI-3 version and even then partially (it doesn't support the "external32" format of MPI I/O, for example) and has problems on some platforms. Both OpenMPI and MPICH have full support for MPI_THREAD_MULTIPLE, ie if the process is "multithreaded", multiple *threads* can use the MPI library without restrictions.
 
-Em um eixo ortogonal ao suporte da plataforma de *hardware*, encontramos
-a cobertura do padrão MPI. Nesse sentido, a implementação MPICH é de
-longe muito superior. O MPICH foi a primeira implementação a suportar
-cada lançamento do padrão MPI, desde a versão MPI-1 até a MPI-3. O
-OpenMPI só recentemente suporta a versão MPI-3 e ainda assim
-parcialmente (não tem suporte para o formato "external32" do MPI I/O,
-por exemplo) e apresenta problemas em algumas plataformas. Tanto o
-OpenMPI como o MPICH possuem suporte completo para o
-MPI_THREAD_MULTIPLE, ou seja, se o processo é "multithreaded", múltiplas
-*threads* podem usar a biblioteca MPI sem restrições.
+Finally, in terms of process management, where OpenMPI was much better some time ago, now MPICH's new process manager, Hydra, is just as good and has the same usability and facilities as OpenMPI's ORTE. The old MPICH managed, called MPD, was difficult to use and without many options, but it was deprecated a few years ago.
 
-Finalmente, em termos de gerenciamento de processos, onde o OpenMPI era
-bem melhor há algum tempo atrás, agora o novo gerenciador de processos
-do MPICH, o Hydra, é tão bom e tem a mesma usabilidade e facilidades que
-o ORTE, do OpenMPI. O velho gerenciado do MPICH, chamado MPD, era
-difícil de usar e sem muitas opções, mas foi tornado obsoleto já há
-alguns anos.
+More information about OpenMPI and MPICH can be found at <https://github.com/open-mpi/ompi/blob/master/README.md> and <https://www.mpich.org/documentation/guides/>, respectively.
 
-Maiores informações sobre o OpenMPI e MPICH podem ser obtidas em
-<https://github.com/open-mpi/ompi/blob/master/README.md> e
-<https://www.mpich.org/documentation/guides/>, respectivamente.
+## Installation
 
-### Instalação 
+Let's consider how to install and configure both most major distributions available as code software open and free: OpenMPI and MPICH. Fortunately most of Linux distributions already have packages available for installing these versions, which makes this task much easier.
 
-Vamos considerar como instalar e configurar as duas
-distribuições mais importantes disponíveis como software de código
-aberto e gratuitas: OpenMPI e MPICH. Felizmente a maioria das
-distribuições Linux já conta pacotes disponíveis para instalação dessas
-versões, o que torna muito mais fácil esta tarefa.
+### Fedora, CentOS and similar ones 
 
-#### Fedora, CentOS e similares 
-
-Basicamente, os diversos tipos de implementação MPI podem ser instalados
-diretamente a partir do repositório:
+Basically, the various types of MPI implementations can be installed directly from the repository.
 
 -   **OpenMPI**
 
@@ -147,11 +68,11 @@ diretamente a partir do repositório:
     $ sudo dnf install mpich-devel
     ```
 
-#### Ubuntu, Debian e similares
+### Ubuntu, Debian and similar ones
 
 -   **OpenMPI**
 
-    Basicamente, instalar o OpenMPI do repositório:
+    Basically, install OpenMPI from repository:
 
     ``` {}
     $ sudo apt-get install openmpi-bin
@@ -161,7 +82,7 @@ diretamente a partir do repositório:
 
 -   **MPICH**
 
-    Instale o pacote MPICH diretamente do repositório:
+Install the MPICH package directly from the repository:
 
     ``` {}
     $ sudo apt-get install mpich
@@ -169,13 +90,13 @@ diretamente a partir do repositório:
     $ sudo apt-get install libmpich-devel
     ```
 
-#### MacOS 
+### MacOS 
 
 -   **OpenMPI**
 
-    A instalação automatizada do OpenMPI é possível no MacOS com a
-    instalação do programa *homebrew*, no endereço <https://brew.sh/>,
-    com o seguinte comando:
+ Automated installation of OpenMPI is possible on MacOS with the
+     *homebrew* program installation, at <https://brew.sh/>,
+     with the following command:
 
     ``` {}
     $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -189,82 +110,72 @@ diretamente a partir do repositório:
 
 -   **MPICH**
 
-    A instalação automatizada do MPICH é possível no MacOS com a
-    instalação do programa *homebrew*, no endereço <https://brew.sh/>,
-    com o seguinte comando:
+    Automated installation of MPICH is possible on MacOS with the
+     *homebrew* program installation, at <https://brew.sh/>,
+     with the following command:
 
     ``` {}
     $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
-    E então digitar o seguinte comando:
+And then type the following command:
 
     ``` {}
     $ brew install mpich
     ```
 
-#### Windows
+### Windows
 
-No Windows, a opção preferencial é usar o emulador de terminal Cygwin ou o Windows Subsystem 
-para Linux (WSL) para Windows 10. Ambos fornecem uma interface semelhante à maioria dos clusters HPC.
+On Windows, the preferred option is to use the Cygwin terminal emulator or Windows Subsystem for Linux (WSL) for Windows 10. Both provide an interface similar to most HPC clusters.
 
-Se você decidir usar o Cygwin, precisará instalar alguns pacotes usando o instalador do Cygwin. 
-Se você já tem o Cygwin instalado, você deve executar o instalador e certificar-se de que os 
-seguintes pacotes estejam selecionados:
+If you decide to use Cygwin, you will need to install some packages using the Cygwin installer. If you already have Cygwin installed, you should run the installer and make sure the following packages are selected:
 
-    - gcc-core e gcc-fortran
-    - openmpi, libopenmpi40, libopenmpihf08_40, libopenmpiusef08_40, openmpi-devel e openmpi-devel.
-    - zlib e zlib-devel
-    - make e cmake
+    - gcc-core and gcc-fortran
+    - openmpi, libopenmpi40, libopenmpihf08_40, libopenmpiusef08_40, openmpi-devel and openmpi-devel.
+    - zlib and zlib-devel
+    - make and cmake
     - git
-    - vim ou seu editor de texto preferido
+    - vim, nano or your favorite text editor
 
-Você pode verificar se funciona compilando qualquer programa C ou Fortran usando o compilador *mpicc* ou *mpifort*.
+You can verify if it works by compiling any 'C' or 'Fortran' program using the *mpicc* or *mpifort* compiler.
 
-No Windows, se você usar o Visual Studio, poderá instalar o Microsoft MPI. O download inclui dois arquivos, 
-*msmpisetup.exe* e *msmpisdk.msi*. Baixe e execute os dois instaladores. Siga estas instruções para criar um projeto 
-com o compilador e a biblioteca MPI.
+On Windows, if you use Visual Studio, you can install Microsoft MPI. The download includes two files, *msmpisetup.exe* and *msmpisdk.msi*. Download and run both installers. Follow these instructions to create a project with the compiler and the MPI library.
 
-### Compilação 
+Also, you can use WSL as an option too. But in this case you must follow the instructions according to the Linux distribution used. 
+See more information on <https://docs.microsoft.com/en-us/windows/wsl/install>.
 
-Para compilar um arquivo fonte prog.c, digite:
+## Compilation 
 
+To compile a source file name *prog.c*, type:
 ``` {}
 $ mpicc -o prog prog.c
 ```
 
-Para compilar um arquivo em Fortran, os seguintes comandos são
-possíveis:
+To compile a file in Fortran, the following commands are possible:
 
 ``` {}
 $ mpif77 -o prog prog.f
 $ mpif90 -o prog prog.f90
 ```
 
-### Configurando o SSH 
+## Configuring SSH 
 
-Para a execução em ambientes com um pequeno número de máquinas
-conectadas via rede, é importante configurar o ambiente para que não
-seja necessário o uso de senhas cada vez que executarmos um comando em
-outra máquina. Para isso, deve-se criar e configurar o uso de chaves SSH
-para todas as máquinas da rede. Neste exemplo, assumimos que existem 2
-máquinas nomeadas como *maquina1* e *maquina2*, e um nome de usuário
-*gabriel*.
+To run in environments with a small number of machines connected via the network, it is important to configure the environment so that it is not necessary to use passwords each time we execute a command on another machine. For this, you must create and configure the use of SSH keys for all machines on the network. In this example, we assume that there are 2 machines named *machine1* and *machine2*, and a username *gabriel*.
 
-Primeiro criamos o diretório \$HOME/.ssh com o comando:
+First we create the \$HOME/.ssh directory with the command:
 
 ``` {}
 maquina1:~$ mkdir $HOME/.ssh
 ```
 
-E em seguida geramos uma chave púbica e uma chave privada com o comando:
+And then we generate a public key and a private key with the command:
 
 ``` {}
 maquina1:~$ ssh-keygen -t rsa -b 4096 -C "gabriel@exemplo.edu"
 ```
 
-Pressione a tecla "Entre" para responder às perguntas seguintes com o
-padrão.
+Press the "Enter" key to answer the following questions with the
+pattern.
 
 ``` {}
 Enter file in which to save the key (/home/gabriel/.ssh/id_rsa): [Press enter]
@@ -275,64 +186,60 @@ Your public key has been saved in /home/gabriel/.ssh/id_rsa.pub.
 The key fingerprint is:
 01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db Seu_email@exemplo.edu
 ```
-
-Copie agora a chave pública, $id\_rsa.pub$, para o arquivo
-$authorized\_keys$ de modo a permitir o acesso a essa máquina.
+Now copy the public key, $id\_rsa.pub$, into the file
+$authorized\_keys$ to allow access to that machine.
 
 ``` {}
 maquina1:~$ cd ~/.ssh
 maquina1:~/.ssh$ cat id_rsa.pub >> authorized_keys
 ```
 
-Na máquina 2, deve ser criado também um diretório \midtilde{~}$/.ssh$, novamente
-com o comando:
+On maquina2, a \midtilde{~}$/.ssh$ directory must also be created, again
+with the command:
 
 ``` {}
 maquina2:~$ mkdir ~/.ssh
 ```
 
-Agora, você deve enviar a chave privada, $id\_rsa$, e a chave pública
-$id\_rsa.pub$, da máquina 1 para máquina 2, usando o comando *scp* para
-isso:
+Now, you must send the private key, $id\_rsa$, and the public key
+$id\_rsa.pub$, from maquina1 to maquina2, using the *scp* command to
+that:
 
 ``` {}
 maquina1:~$ scp ~/.ssh/id_rsa gabriel@maquina2:~/.ssh/
 maquina1:~$ scp ~/.ssh/id_rsa.pub gabriel@maquina2:~/.ssh/
 ```
 
-Agora, copie o arquivo $id\_rsa.pub$ para o arquivo $authorized\_keys$,
-de modo que a máquina 1 possa fazer acesso à maquina 2 sem uso de senha:
+Now copy the $id\_rsa.pub$ file to the $authorized\_keys$ file,
+so that maquina1 can access maquina2 without using a password:
 
 ``` {}
 maquina2:~$ cd ~/.ssh
 maquina2:~/.ssh$ cat id_rsa.pub >> authorized_keys
 ```
 
-#### Executando um programa 
+## Executing a program 
 
-Para executar o programa, digamos, com 4 processos, devemos copiar o
-executável para o seu diretório de trabalho e digitar:
+To run the program, let's say, with 4 processes, we must copy the
+executable to your working directory and type:
 
 ``` {}
 $ mipexec -n 4 prog
 ```
 
-O comando $mpiexec$ permite opções mais elaboradas:
+The $mpiexec$ command allows for more elaborate options:
 
 ``` {}
 $ mpiexec -n 1 -host paraty : -n 19 prog
 ```
 
-Dispara o processo com ranque 0 na máquina "paraty" e outros 19
-processos divididos entre as demais máquinas. Para executar através de
-múltiplas máquinas:
+This command start the process with rank '0' on the "paraty" machine and another 19 processes divided among the other machines. To run across multiple machines use the $hostfile$ option:
 
 ``` {}
-$ mpiexec --hostfile hostfile -n 4 prog
+$ mpiexec --hostfile maquinas -n 4 prog
 ```
 
-Onde *hostfile* é um arquivo contendo o nome ou IP das máquinas onde
-deseja executar a aplicação, por exemplo:
+Where *maquinas* is a file containing the name or IP of the machines where you want to run the application, for example:
 
 ``` {}
 paraty:2
@@ -340,51 +247,203 @@ charitas:3
 barra:2
 ```
 
-Onde o número ao lado do nome de cada máquina indica o total de
-processos a serem executados. Os comentários neste arquivo são
-precedidos com o caractere "\#". Para saber mais opções, digite:
+The number next to each machine name indicates the total number of
+processes to be performed. The comments in this file are
+preceded with the character "\#". For more options, type:
 
 ``` {}
 $ mpiexec --help
 ```
 
-#### Gerenciador de Recursos 
+## Resource Manager
 
-Gerenciadores de recursos como SGE, PBS, SLURM são comuns em muitos
-*clusters* gerenciados. Nesse caso, o MPI detecta a sua existência e
-interage automaticamente com eles. No caso do PBS, você pode criar um
-arquivo *script* como a seguir:
+Resource managers like SGE, PBS, SLURM are common in many managed *clusters*. In this case, the MPI detects their existence and automatically interacts with them. In this section, we make a brief presentation on how to configure some of them.
+
+### PBS
+
+In the case of PBS, you can create a *script* file as follows:
 
 ``` {}
-# declarar um nome para esta tarefa como sample_job
+# declare a name for this job as sample_job
 #PBS -N my_parallel_job
-# solicita que a tarefa seja executada na fila com nome parallel
+# requests the task to run on the queue named parallel
 #PBS -q parallel
-# solicita um total de 4 processadores para esta tarefa (2 nós e 2 processadores por nó)
+# requests a total of 4 processors for this task (2 nodes and 2 processors per node)
 #PBS -l nodes=2:ppn=2
-# solicita 4 horas de tempo de processador
+# requests 4 hours of processor time
 #PBS -l cput=0:04:00
-# combina a saída padrão e a saída de erro do PBS
+# combines standard output and PBS error output
 #PBS -j oe
-# envia um email quando a tarefa inicia e quando ela termina e aborta
+# sends an email when the task starts and when it ends and aborts
 #PBS -m bea
-# especifica o seu endereço de e-mail
-#PBS -M John.Smith@dartmouth.edu
-#muda para o diretório onde a sua tarefa vai ser submetida
+# specify your email address
+#PBS -M gabriel@ic.ufrj.br
+# changes to the directory where your task will be submitted
 cd $PBS_O_WORKDIR
-#inclui o caminho completo com o nome do programa MPI a ser executado
+# includes the full path with the name of the MPI program to be executed
 mpirun -machinefile $PBS_NODEFILE -np 4 /path_to_executable/program_name
 exit 0
 ```
 
-As tarefas podem ser submetidas como:
+Tasks can be submitted as:
 
 ``` {}
 $ qsub -l nodes=2:ppn=2 teste.sub
 ```
 
-O **mpiexec** vai saber automaticamente da existência do PBS no sistema
-e pergunta o número total de processadores alocados (4 no caso), e quais
-nós foram alocados para o processamento da tarefa. O uso é similar para
-outros gerenciadores de recurso. Mais opções para o comando **qsub**
-podem ser encontradas em <https://www.jlab.org/hpc/PBS/qsub.html>.
+**mpiexec** will automatically know about the existence of PBS on the system and ask for the total number of allocated processors (4 in this case), and which nodes were allocated to process the task. Usage is similar for other resource managers. More options for the **qsub** command can be found at <https://www.jlab.org/hpc/PBS/qsub.html>.
+
+### SLURM 
+
+SLURM is also a very common resource manager. 
+
+
+#### PMIx Versions
+
+When launching applications linked against our OpenMPI libraries via $srun$, you must specify the correct version of PMIx using the "--mpi" srun option. Generally speaking you can determine the appropriate PMIx version to use by running the ompi\_info command after loading the desired OpenMPI environment module. For example,
+
+``` {}
+$ module load intel/2018 openmpi/3.1.2
+$ ompi_info --param pmix all
+                MCA pmix: isolated (MCA v2.1.0, API v2.0.0, Component v3.1.2)
+                MCA pmix: ext2x (MCA v2.1.0, API v2.0.0, Component v3.1.2)
+                MCA pmix: s1 (MCA v2.1.0, API v2.0.0, Component v3.1.2)
+                MCA pmix: s2 (MCA v2.1.0, API v2.0.0, Component v3.1.2)
+$ ml purge
+$ ml intel/2019 openmpi/4.0.1
+$ ompi_info --param pmix all
+                MCA pmix: isolated (MCA v2.1.0, API v2.0.0, Component v4.0.1)
+                MCA pmix: ext3x (MCA v2.1.0, API v2.0.0, Component v4.0.1)
+                MCA pmix: s1 (MCA v2.1.0, API v2.0.0, Component v4.0.1)
+                MCA pmix: s2 (MCA v2.1.0, API v2.0.0, Component v4.0.1)
+```
+
+In the examples above, you would specify pmix_v2 (i.e. ext2x) for the combination of intel/2018 and openmpi/3.1.2 and pmix_v3 (ext3x) for the second set of modules, intel/2019 and openmpi/4.0.1. 
+
+#### Important srun/sbatch/salloc Options
+
+This script can serve as a template for MPI, or message passing interface, applications. These are applications that can use multiple processors that may, or may not, be on multiple compute nodes.
+
+Our testing has found that it is best to be very specific about how you want your MPI ranks laid out across nodes and even sockets (multi-core CPUs). SLURM and OpenMPI have some conflicting behavior if you leave too much to chance. Please refer to the full SLURM sbatch documentation, but the following directives are the main directives to pay attention to:
+
+``` {}
+    -c, --cpus-per-task=<ncpus>
+        Request ncpus cores per task.
+    -m, --distribution=arbitrary|<block|cyclic|plane=<options>[:block|cyclic|fcyclic]>
+        Specify alternate distribution methods for remote processes.
+        We recommend -m cyclic:cyclic, which tells SLURM to distribute tasks cyclically over nodes and sockets.
+    -N, --nodes=<minnodes[-maxnodes]>
+        Request that a minimum of minnodes nodes be allocated to this job.
+    -n, --ntasks=<number>
+        Number of tasks (MPI ranks)
+    --ntasks-per-node=<ntasks>
+        Request that ntasks be invoked on each node
+    --ntasks-per-socket=<ntasks>
+        Request the maximum ntasks be invoked on each socket
+        Notes on socket layout:
+            hpg3-compute nodes have 2 sockets, each with 64 cores.
+            hpg2-compute nodes have 2 sockets, each with 16 cores.
+            hpg1-compute nodes have 4 sockets, each with 16 cores.
+```
+
+#### Example
+
+The following example requests 24 tasks, each with a single core. It further specifies that these should be split evenly on 2 nodes, and within the nodes, the 12 tasks should be evenly split on the two sockets. So each CPU on the two nodes will have 6 tasks, each with its own dedicated core. The --distribution option will ensure that tasks are assigned cyclically among the allocated nodes and sockets. Please see the SchedMD sbatch documentation for more detailed explanations of each of the sbatch options below.
+
+SLURM is very flexible and allows users to be very specific about their resource requests. Thinking about your application and doing some testing will be important to determine the best set of resources for your specific job.
+
+``` {}
+#!/bin/bash
+#SBATCH --job-name=mpi_job_test      # Job name
+#SBATCH --mail-type=END,FAIL         # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=email@ufl.edu    # Where to send mail.  Set this to your email address
+#SBATCH --ntasks=24                  # Number of MPI tasks (i.e. processes)
+#SBATCH --cpus-per-task=1            # Number of cores per MPI task 
+#SBATCH --nodes=2                    # Maximum number of nodes to be allocated
+#SBATCH --ntasks-per-node=12         # Maximum number of tasks on each node
+#SBATCH --ntasks-per-socket=6        # Maximum number of tasks on each socket
+#SBATCH --distribution=cyclic:cyclic # Distribute tasks cyclically first among nodes and then among sockets within a node
+#SBATCH --mem-per-cpu=600mb          # Memory (i.e. RAM) per processor
+#SBATCH --time=00:05:00              # Wall time limit (days-hrs:min:sec)
+#SBATCH --output=mpi_test_%j.log     # Path to the standard output and error files relative to the working directory
+
+echo "Date              = $(date)"
+echo "Hostname          = $(hostname -s)"
+echo "Working Directory = $(pwd)"
+echo ""
+echo "Number of Nodes Allocated      = $SLURM_JOB_NUM_NODES"
+echo "Number of Tasks Allocated      = $SLURM_NTASKS"
+echo "Number of Cores/Task Allocated = $SLURM_CPUS_PER_TASK"
+
+module load intel/2018.1.163 openmpi/3.0.0
+srun --mpi=pmix_v1 /data/training/SLURM/prime/prime_mpi
+```
+
+#### Hybrid MPI/Threaded job
+
+This script can serve as a template for hybrid MPI/SMP applications. These are MPI applications where each MPI process is multi-threaded (usually via either OpenMP or POSIX Threads) and can use multiple processors.
+
+Our testing has found that it is best to be very specific about how you want your MPI ranks laid out across nodes and even sockets (multi-core CPUs). SLURM and OpenMPI have some conflicting behavior if you leave too much to chance. Please refer to the full SLURM sbatch documentation, as well as the information in the MPI example above.
+
+The following example requests 8 tasks, each with 4 cores. It further specifies that these should be split evenly on 2 nodes, and within the nodes, the 4 tasks should be evenly split on the two sockets. So each CPU on the two nodes will have 2 tasks, each with 4 cores. The distribution option will ensure that MPI ranks are distributed cyclically on nodes and sockets.
+
+``` {}
+#!/bin/bash
+#SBATCH --job-name=hybrid_job_test      # Job name
+#SBATCH --mail-type=END,FAIL            # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=email@ufl.edu       # Where to send mail	
+#SBATCH --ntasks=8                      # Number of MPI ranks
+#SBATCH --cpus-per-task=4               # Number of cores per MPI rank 
+#SBATCH --nodes=2                       # Number of nodes
+#SBATCH --ntasks-per-node=4             # How many tasks on each node
+#SBATCH --ntasks-per-socket=2           # How many tasks on each CPU or socket
+#SBATCH --mem-per-cpu=100mb             # Memory per core
+#SBATCH --time=00:05:00                 # Time limit hrs:min:sec
+#SBATCH --output=hybrid_test_%j.log     # Standard output and error log
+pwd; hostname; date
+ 
+module load  intel/2018.1.163  openmpi/3.0.0 raxml/8.2.12
+ 
+srun --mpi=pmix_v1 raxmlHPC-HYBRID-SSE3 -T $SLURM_CPUS_PER_TASK \
+      -f a -m GTRGAMMA -s /data/training/SLURM/dna.phy -p $RANDOM \
+      -x $RANDOM -N 500 -n dna
+ 
+date
+```
+
+The following example requests 8 tasks, each with 8 cores. It further specifies that these should be split evenly on 4 nodes, and within the nodes, the 2 tasks should be split, one on each of the two sockets. So each CPU on the two nodes will have 1 task, each with 8 cores. The distribution option will ensure that MPI ranks are distributed cyclically on nodes and sockets.
+
+Also note setting OMP\_NUM\_THREADS so that OpenMP knows how many threads to use per task.
+
+``` {}
+#!/bin/bash
+#SBATCH --job-name=LAMMPS
+#SBATCH --output=LAMMPS_%j.out
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=<email_address>
+#SBATCH --nodes=4              # Number of nodes
+#SBATCH --ntasks=8             # Number of MPI ranks
+#SBATCH --ntasks-per-node=2    # Number of MPI ranks per node
+#SBATCH --ntasks-per-socket=1  # Number of tasks per processor socket on the node
+#SBATCH --cpus-per-task=8      # Number of OpenMP threads for each MPI process/rank
+#SBATCH --mem-per-cpu=2000mb   # Per processor memory request
+#SBATCH --time=4-00:00:00      # Walltime in hh:mm:ss or d-hh:mm:ss
+date;hostname;pwd
+
+module load intel/2018 openmpi/3.1.0
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+
+srun --mpi=pmi_v1 /path/to/app/lmp_gator2 < in.Cu.v.24nm.eq_xrd
+
+date
+```
+
+* Note that MPI gets -np from SLURM automatically.
+* Note there are many directives available to control processor layout.
+* Some to pay particular attention to are:
+     *   --nodes if you care exactly how many nodes are used
+     *   --ntasks-per-node to limit number of tasks on a node
+     *   --distribution one of several directives (see also --contiguous, --cores-per-socket, --mem_bind, --ntasks-per-socket, --sockets-per-node) to control how tasks, cores and memory are distributed among nodes, sockets and cores. While SLURM will generally make appropriate decisions for setting up jobs, careful use of these directives can significantly enhance job performance and users are encouraged to profile application performance under different conditions.
+
+You can have more information on SLURM on <https://slurm.schedmd.com/quickstart.html> or <https://help.rc.ufl.edu/doc/Sample_SLURM_Scripts>.
