@@ -93,7 +93,7 @@ Basically, the various types of MPI implementations can be installed directly fr
 
 -   **MPICH**
 
-    Instale o pacote MPICH diretamente do repositório:
+Install the MPICH package directly from the repository:
 
     ``` {}
     $ sudo apt-get install mpich
@@ -158,7 +158,7 @@ with the compiler and the MPI library.
 Also, you can use WSL as an option too. But in this case you must follow the instructions according to the Linux distribution used. 
 See more information on <https://docs.microsoft.com/en-us/windows/wsl/install>.
 
-### Compilação 
+### Compilation 
 
 To compile a source file name *prog.c*, type:
 ``` {}
@@ -172,7 +172,7 @@ $ mpif77 -o prog prog.f
 $ mpif90 -o prog prog.f90
 ```
 
-### Configuring  SSH 
+### Configuring SSH 
 
 To run in environments with a small number of machines connected via the network, it is important to configure the environment so that it is not necessary to use passwords each time we execute a command on another machine. For this, you must create and configure the use of SSH keys for all machines on the network. In this example, we assume that there are 2 machines named *machine1* and *machine2*, and a username *gabriel*.
 
@@ -182,14 +182,14 @@ First we create the \$HOME/.ssh directory with the command:
 maquina1:~$ mkdir $HOME/.ssh
 ```
 
-E em seguida geramos uma chave púbica e uma chave privada com o comando:
+And then we generate a public key and a private key with the command:
 
 ``` {}
 maquina1:~$ ssh-keygen -t rsa -b 4096 -C "gabriel@exemplo.edu"
 ```
 
-Pressione a tecla "Entre" para responder às perguntas seguintes com o
-padrão.
+Press the "Enter" key to answer the following questions with the
+pattern.
 
 ``` {}
 Enter file in which to save the key (/home/gabriel/.ssh/id_rsa): [Press enter]
@@ -200,64 +200,60 @@ Your public key has been saved in /home/gabriel/.ssh/id_rsa.pub.
 The key fingerprint is:
 01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db Seu_email@exemplo.edu
 ```
-
-Copie agora a chave pública, $id\_rsa.pub$, para o arquivo
-$authorized\_keys$ de modo a permitir o acesso a essa máquina.
+Now copy the public key, $id\_rsa.pub$, into the file
+$authorized\_keys$ to allow access to that machine.
 
 ``` {}
 maquina1:~$ cd ~/.ssh
 maquina1:~/.ssh$ cat id_rsa.pub >> authorized_keys
 ```
 
-Na máquina 2, deve ser criado também um diretório \midtilde{~}$/.ssh$, novamente
-com o comando:
+On maquina2, a \midtilde{~}$/.ssh$ directory must also be created, again
+with the command:
 
 ``` {}
 maquina2:~$ mkdir ~/.ssh
 ```
 
-Agora, você deve enviar a chave privada, $id\_rsa$, e a chave pública
-$id\_rsa.pub$, da máquina 1 para máquina 2, usando o comando *scp* para
-isso:
+Now, you must send the private key, $id\_rsa$, and the public key
+$id\_rsa.pub$, from maquina1 to maquina2, using the *scp* command to
+that:
 
 ``` {}
 maquina1:~$ scp ~/.ssh/id_rsa gabriel@maquina2:~/.ssh/
 maquina1:~$ scp ~/.ssh/id_rsa.pub gabriel@maquina2:~/.ssh/
 ```
 
-Agora, copie o arquivo $id\_rsa.pub$ para o arquivo $authorized\_keys$,
-de modo que a máquina 1 possa fazer acesso à maquina 2 sem uso de senha:
+Now copy the $id\_rsa.pub$ file to the $authorized\_keys$ file,
+so that maquina1 can access maquina2 without using a password:
 
 ``` {}
 maquina2:~$ cd ~/.ssh
 maquina2:~/.ssh$ cat id_rsa.pub >> authorized_keys
 ```
 
-#### Executando um programa 
+#### Executing a program 
 
-Para executar o programa, digamos, com 4 processos, devemos copiar o
-executável para o seu diretório de trabalho e digitar:
+To run the program, let's say, with 4 processes, we must copy the
+executable to your working directory and type:
 
 ``` {}
 $ mipexec -n 4 prog
 ```
 
-O comando $mpiexec$ permite opções mais elaboradas:
+The $mpiexec$ command allows for more elaborate options:
 
 ``` {}
 $ mpiexec -n 1 -host paraty : -n 19 prog
 ```
 
-Dispara o processo com ranque 0 na máquina "paraty" e outros 19
-processos divididos entre as demais máquinas. Para executar através de
-múltiplas máquinas:
+This command start the process with rank '0' on the "paraty" machine and another 19 processes divided among the other machines. To run across multiple machines use the $hostfile$ option:
 
 ``` {}
-$ mpiexec --hostfile hostfile -n 4 prog
+$ mpiexec --hostfile maquinas -n 4 prog
 ```
 
-Onde *hostfile* é um arquivo contendo o nome ou IP das máquinas onde
-deseja executar a aplicação, por exemplo:
+Where *maquinas* is a file containing the name or IP of the machines where you want to run the application, for example:
 
 ``` {}
 paraty:2
@@ -265,51 +261,45 @@ charitas:3
 barra:2
 ```
 
-Onde o número ao lado do nome de cada máquina indica o total de
-processos a serem executados. Os comentários neste arquivo são
-precedidos com o caractere "\#". Para saber mais opções, digite:
+The number next to each machine name indicates the total number of
+processes to be performed. The comments in this file are
+preceded with the character "\#". For more options, type:
 
 ``` {}
 $ mpiexec --help
 ```
 
-#### Gerenciador de Recursos 
-
-Gerenciadores de recursos como SGE, PBS, SLURM são comuns em muitos
-*clusters* gerenciados. Nesse caso, o MPI detecta a sua existência e
-interage automaticamente com eles. No caso do PBS, você pode criar um
-arquivo *script* como a seguir:
+#### Resource Manager
+Resource managers like SGE, PBS, SLURM are common in many managed *clusters*. In this case, the MPI detects their existence and automatically interacts with them. In the case of PBS, you can create a *script* file as follows:
 
 ``` {}
-# declarar um nome para esta tarefa como sample_job
+# declare a name for this job as sample_job
 #PBS -N my_parallel_job
-# solicita que a tarefa seja executada na fila com nome parallel
+# requests the task to run on the queue named parallel
 #PBS -q parallel
-# solicita um total de 4 processadores para esta tarefa (2 nós e 2 processadores por nó)
+# requests a total of 4 processors for this task (2 nodes and 2 processors per node)
 #PBS -l nodes=2:ppn=2
-# solicita 4 horas de tempo de processador
+# requests 4 hours of processor time
 #PBS -l cput=0:04:00
-# combina a saída padrão e a saída de erro do PBS
+# combines standard output and PBS error output
 #PBS -j oe
-# envia um email quando a tarefa inicia e quando ela termina e aborta
+# sends an email when the task starts and when it ends and aborts
 #PBS -m bea
-# especifica o seu endereço de e-mail
-#PBS -M John.Smith@dartmouth.edu
-#muda para o diretório onde a sua tarefa vai ser submetida
+# specify your email address
+#PBS -M gabriel@ic.ufrj.br
+# changes to the directory where your task will be submitted
 cd $PBS_O_WORKDIR
-#inclui o caminho completo com o nome do programa MPI a ser executado
+# includes the full path with the name of the MPI program to be executed
 mpirun -machinefile $PBS_NODEFILE -np 4 /path_to_executable/program_name
 exit 0
 ```
 
-As tarefas podem ser submetidas como:
+Tasks can be submitted as:
 
 ``` {}
 $ qsub -l nodes=2:ppn=2 teste.sub
 ```
 
-O **mpiexec** vai saber automaticamente da existência do PBS no sistema
-e pergunta o número total de processadores alocados (4 no caso), e quais
-nós foram alocados para o processamento da tarefa. O uso é similar para
-outros gerenciadores de recurso. Mais opções para o comando **qsub**
-podem ser encontradas em <https://www.jlab.org/hpc/PBS/qsub.html>.
+**mpiexec** will automatically know about the existence of PBS on the system and ask for the total number of allocated processors (4 in this case), and which nodes were allocated to process the task. Usage is similar for other resource managers. More options for the **qsub** command can be found at <https://www.jlab.org/hpc/PBS/qsub.html>.
+
+You can have more information on SLURM, another resource manager, on <https://slurm.schedmd.com/quickstart.html>.
