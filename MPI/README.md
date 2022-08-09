@@ -442,8 +442,8 @@ date
 * Note that MPI gets -np from SLURM automatically.
 * Note there are many directives available to control processor layout.
 * Some to pay particular attention to are:
-          +   --nodes if you care exactly how many nodes are used
-          +  --ntasks-per-node to limit number of tasks on a node
-          +   --distribution one of several directives (see also --contiguous, --cores-per-socket, --mem_bind, --ntasks-per-socket, --sockets-per-node) to control how tasks, cores and memory are distributed among nodes, sockets and cores. While SLURM will generally make appropriate decisions for setting up jobs, careful use of these directives can significantly enhance job performance and users are encouraged to profile application performance under different conditions.
+     *   --nodes if you care exactly how many nodes are used
+     *   --ntasks-per-node to limit number of tasks on a node
+     *   --distribution one of several directives (see also --contiguous, --cores-per-socket, --mem_bind, --ntasks-per-socket, --sockets-per-node) to control how tasks, cores and memory are distributed among nodes, sockets and cores. While SLURM will generally make appropriate decisions for setting up jobs, careful use of these directives can significantly enhance job performance and users are encouraged to profile application performance under different conditions.
 
 You can have more information on SLURM, another resource manager, on <https://slurm.schedmd.com/quickstart.html> or <https://help.rc.ufl.edu/doc/Sample_SLURM_Scripts>.
