@@ -1,15 +1,8 @@
 # MPI
 
-This repository presents the source codes used in the course of Costa Rica High Performance Computing
-School 2002. Additionally we present a support text for the preparation of the MPI execution environment.
+This repository presents the source codes used in the course of Costa Rica High Performance Computing School 2002. Additionally we present a support text for the preparation of the MPI execution environment, as well as running an MPI program on some Posix operating system distributions.
 
-## MPI executing environment setup
-
-We present here a brief guide on installing and configuring the
-MPI library, as well as running an MPI program on some
-Posix operating system distributions.
-
-### Introduction
+## Introduction
 
 At first, we must consider that there are several implementations available for MPI, some of them free and other commercial. The processor and the interconnection network used by the system where the applications will be executed are some of the factors to be considered when choosing the appropriate distribution of MPI. Eventually, some distributions support more than one type of processor or network interface, which gives them a greater possibility of adapting to the characteristics of your system.
 
@@ -50,18 +43,14 @@ Intel MPI has good performance and a lot of flexibility in terms of the types of
 On an axis orthogonal to the support of the *hardware* platform, we find the coverage of the MPI standard. In this sense, the MPICH implementation is far superior. MPICH was the first implementation to support every release of the MPI standard, from MPI-1 to MPI-3. OpenMPI only recently supports the MPI-3 version and even then partially (it doesn't support the "external32" format of MPI I/O, for example) and has problems on some platforms. Both OpenMPI and MPICH have full support for MPI_THREAD_MULTIPLE, ie if the process is "multithreaded", multiple *threads* can use the MPI library without restrictions.
 
 Finally, in terms of process management, where OpenMPI was much better some time ago, now MPICH's new process manager, Hydra, is just as good and has the same usability and facilities as OpenMPI's ORTE. The old MPICH managed, called MPD, was difficult to use and without many options, but it was deprecated a few years ago.
-More information about OpenMPI and MPICH can be found at
-<https://github.com/open-mpi/ompi/blob/master/README.md> and
-<https://www.mpich.org/documentation/guides/>, respectively
 
-### Instalation
+More information about OpenMPI and MPICH can be found at <https://github.com/open-mpi/ompi/blob/master/README.md> and <https://www.mpich.org/documentation/guides/>, respectively.
 
-Let's consider how to install and configure both
-most major distributions available as code software
-open and free: OpenMPI and MPICH. Fortunately most of
-Linux distributions already have packages available for installing these versions, which makes this task much easier.
+## Installation
 
-#### Fedora, CentOS and similar ones 
+Let's consider how to install and configure both most major distributions available as code software open and free: OpenMPI and MPICH. Fortunately most of Linux distributions already have packages available for installing these versions, which makes this task much easier.
+
+### Fedora, CentOS and similar ones 
 
 Basically, the various types of MPI implementations can be installed directly from the repository.
 
@@ -79,7 +68,7 @@ Basically, the various types of MPI implementations can be installed directly fr
     $ sudo dnf install mpich-devel
     ```
 
-#### Ubuntu, Debian and similar ones
+### Ubuntu, Debian and similar ones
 
 -   **OpenMPI**
 
@@ -101,7 +90,7 @@ Install the MPICH package directly from the repository:
     $ sudo apt-get install libmpich-devel
     ```
 
-#### MacOS 
+### MacOS 
 
 -   **OpenMPI**
 
@@ -135,30 +124,27 @@ And then type the following command:
     $ brew install mpich
     ```
 
-#### Windows
+### Windows
 
 On Windows, the preferred option is to use the Cygwin terminal emulator or Windows Subsystem for Linux (WSL) for Windows 10. Both provide an interface similar to most HPC clusters.
 
-If you decide to use Cygwin, you will need to install some packages using the Cygwin installer.
-If you already have Cygwin installed, you should run the installer and make sure the following packages are selected:
+If you decide to use Cygwin, you will need to install some packages using the Cygwin installer. If you already have Cygwin installed, you should run the installer and make sure the following packages are selected:
 
-    - gcc-core e gcc-fortran
-    - openmpi, libopenmpi40, libopenmpihf08_40, libopenmpiusef08_40, openmpi-devel e openmpi-devel.
-    - zlib e zlib-devel
-    - make e cmake
+    - gcc-core and gcc-fortran
+    - openmpi, libopenmpi40, libopenmpihf08_40, libopenmpiusef08_40, openmpi-devel and openmpi-devel.
+    - zlib and zlib-devel
+    - make and cmake
     - git
-    - vim ou seu editor de texto preferido
+    - vim, nano or your favorite text editor
 
-You can verify if it works by compiling any C or Fortran program using the *mpicc* or *mpifort* compiler.
+You can verify if it works by compiling any 'C' or 'Fortran' program using the *mpicc* or *mpifort* compiler.
 
-On Windows, if you use Visual Studio, you can install Microsoft MPI. The download includes two files,
-*msmpisetup.exe* and *msmpisdk.msi*. Download and run both installers. Follow these instructions to create a project
-with the compiler and the MPI library.
+On Windows, if you use Visual Studio, you can install Microsoft MPI. The download includes two files, *msmpisetup.exe* and *msmpisdk.msi*. Download and run both installers. Follow these instructions to create a project with the compiler and the MPI library.
 
 Also, you can use WSL as an option too. But in this case you must follow the instructions according to the Linux distribution used. 
 See more information on <https://docs.microsoft.com/en-us/windows/wsl/install>.
 
-### Compilation 
+## Compilation 
 
 To compile a source file name *prog.c*, type:
 ``` {}
@@ -172,7 +158,7 @@ $ mpif77 -o prog prog.f
 $ mpif90 -o prog prog.f90
 ```
 
-### Configuring SSH 
+## Configuring SSH 
 
 To run in environments with a small number of machines connected via the network, it is important to configure the environment so that it is not necessary to use passwords each time we execute a command on another machine. For this, you must create and configure the use of SSH keys for all machines on the network. In this example, we assume that there are 2 machines named *machine1* and *machine2*, and a username *gabriel*.
 
@@ -232,7 +218,7 @@ maquina2:~$ cd ~/.ssh
 maquina2:~/.ssh$ cat id_rsa.pub >> authorized_keys
 ```
 
-#### Executing a program 
+## Executing a program 
 
 To run the program, let's say, with 4 processes, we must copy the
 executable to your working directory and type:
@@ -269,8 +255,13 @@ preceded with the character "\#". For more options, type:
 $ mpiexec --help
 ```
 
-#### Resource Manager
-Resource managers like SGE, PBS, SLURM are common in many managed *clusters*. In this case, the MPI detects their existence and automatically interacts with them. In the case of PBS, you can create a *script* file as follows:
+## Resource Manager
+
+Resource managers like SGE, PBS, SLURM are common in many managed *clusters*. In this case, the MPI detects their existence and automatically interacts with them. In this section, we make a brief presentation on how to configure some of them.
+
+### PBS
+
+In the case of PBS, you can create a *script* file as follows:
 
 ``` {}
 # declare a name for this job as sample_job
@@ -302,4 +293,157 @@ $ qsub -l nodes=2:ppn=2 teste.sub
 
 **mpiexec** will automatically know about the existence of PBS on the system and ask for the total number of allocated processors (4 in this case), and which nodes were allocated to process the task. Usage is similar for other resource managers. More options for the **qsub** command can be found at <https://www.jlab.org/hpc/PBS/qsub.html>.
 
-You can have more information on SLURM, another resource manager, on <https://slurm.schedmd.com/quickstart.html>.
+### SLURM 
+
+SLURM is also a very common resource manager. 
+
+
+#### PMIx Versions
+
+When launching applications linked against our OpenMPI libraries via $srun$, you must specify the correct version of PMIx using the "--mpi" srun option. Generally speaking you can determine the appropriate PMIx version to use by running the ompi\_info command after loading the desired OpenMPI environment module. For example,
+
+``` {}
+$ module load intel/2018 openmpi/3.1.2
+$ ompi_info --param pmix all
+                MCA pmix: isolated (MCA v2.1.0, API v2.0.0, Component v3.1.2)
+                MCA pmix: ext2x (MCA v2.1.0, API v2.0.0, Component v3.1.2)
+                MCA pmix: s1 (MCA v2.1.0, API v2.0.0, Component v3.1.2)
+                MCA pmix: s2 (MCA v2.1.0, API v2.0.0, Component v3.1.2)
+$ ml purge
+$ ml intel/2019 openmpi/4.0.1
+$ ompi_info --param pmix all
+                MCA pmix: isolated (MCA v2.1.0, API v2.0.0, Component v4.0.1)
+                MCA pmix: ext3x (MCA v2.1.0, API v2.0.0, Component v4.0.1)
+                MCA pmix: s1 (MCA v2.1.0, API v2.0.0, Component v4.0.1)
+                MCA pmix: s2 (MCA v2.1.0, API v2.0.0, Component v4.0.1)
+```
+
+In the examples above, you would specify pmix_v2 (i.e. ext2x) for the combination of intel/2018 and openmpi/3.1.2 and pmix_v3 (ext3x) for the second set of modules, intel/2019 and openmpi/4.0.1. 
+
+#### Important srun/sbatch/salloc Options
+
+This script can serve as a template for MPI, or message passing interface, applications. These are applications that can use multiple processors that may, or may not, be on multiple compute nodes.
+
+Our testing has found that it is best to be very specific about how you want your MPI ranks laid out across nodes and even sockets (multi-core CPUs). SLURM and OpenMPI have some conflicting behavior if you leave too much to chance. Please refer to the full SLURM sbatch documentation, but the following directives are the main directives to pay attention to:
+
+``` {}
+    -c, --cpus-per-task=<ncpus>
+        Request ncpus cores per task.
+    -m, --distribution=arbitrary|<block|cyclic|plane=<options>[:block|cyclic|fcyclic]>
+        Specify alternate distribution methods for remote processes.
+        We recommend -m cyclic:cyclic, which tells SLURM to distribute tasks cyclically over nodes and sockets.
+    -N, --nodes=<minnodes[-maxnodes]>
+        Request that a minimum of minnodes nodes be allocated to this job.
+    -n, --ntasks=<number>
+        Number of tasks (MPI ranks)
+    --ntasks-per-node=<ntasks>
+        Request that ntasks be invoked on each node
+    --ntasks-per-socket=<ntasks>
+        Request the maximum ntasks be invoked on each socket
+        Notes on socket layout:
+            hpg3-compute nodes have 2 sockets, each with 64 cores.
+            hpg2-compute nodes have 2 sockets, each with 16 cores.
+            hpg1-compute nodes have 4 sockets, each with 16 cores.
+```
+
+#### Example
+
+The following example requests 24 tasks, each with a single core. It further specifies that these should be split evenly on 2 nodes, and within the nodes, the 12 tasks should be evenly split on the two sockets. So each CPU on the two nodes will have 6 tasks, each with its own dedicated core. The --distribution option will ensure that tasks are assigned cyclically among the allocated nodes and sockets. Please see the SchedMD sbatch documentation for more detailed explanations of each of the sbatch options below.
+
+SLURM is very flexible and allows users to be very specific about their resource requests. Thinking about your application and doing some testing will be important to determine the best set of resources for your specific job.
+
+``` {}
+#!/bin/bash
+#SBATCH --job-name=mpi_job_test      # Job name
+#SBATCH --mail-type=END,FAIL         # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=email@ufl.edu    # Where to send mail.  Set this to your email address
+#SBATCH --ntasks=24                  # Number of MPI tasks (i.e. processes)
+#SBATCH --cpus-per-task=1            # Number of cores per MPI task 
+#SBATCH --nodes=2                    # Maximum number of nodes to be allocated
+#SBATCH --ntasks-per-node=12         # Maximum number of tasks on each node
+#SBATCH --ntasks-per-socket=6        # Maximum number of tasks on each socket
+#SBATCH --distribution=cyclic:cyclic # Distribute tasks cyclically first among nodes and then among sockets within a node
+#SBATCH --mem-per-cpu=600mb          # Memory (i.e. RAM) per processor
+#SBATCH --time=00:05:00              # Wall time limit (days-hrs:min:sec)
+#SBATCH --output=mpi_test_%j.log     # Path to the standard output and error files relative to the working directory
+
+echo "Date              = $(date)"
+echo "Hostname          = $(hostname -s)"
+echo "Working Directory = $(pwd)"
+echo ""
+echo "Number of Nodes Allocated      = $SLURM_JOB_NUM_NODES"
+echo "Number of Tasks Allocated      = $SLURM_NTASKS"
+echo "Number of Cores/Task Allocated = $SLURM_CPUS_PER_TASK"
+
+module load intel/2018.1.163 openmpi/3.0.0
+srun --mpi=pmix_v1 /data/training/SLURM/prime/prime_mpi
+```
+
+#### Hybrid MPI/Threaded job
+
+This script can serve as a template for hybrid MPI/SMP applications. These are MPI applications where each MPI process is multi-threaded (usually via either OpenMP or POSIX Threads) and can use multiple processors.
+
+Our testing has found that it is best to be very specific about how you want your MPI ranks laid out across nodes and even sockets (multi-core CPUs). SLURM and OpenMPI have some conflicting behavior if you leave too much to chance. Please refer to the full SLURM sbatch documentation, as well as the information in the MPI example above.
+
+The following example requests 8 tasks, each with 4 cores. It further specifies that these should be split evenly on 2 nodes, and within the nodes, the 4 tasks should be evenly split on the two sockets. So each CPU on the two nodes will have 2 tasks, each with 4 cores. The distribution option will ensure that MPI ranks are distributed cyclically on nodes and sockets.
+
+``` {}
+#!/bin/bash
+#SBATCH --job-name=hybrid_job_test      # Job name
+#SBATCH --mail-type=END,FAIL            # Mail events (NONE, BEGIN, END, FAIL, ALL)
+#SBATCH --mail-user=email@ufl.edu       # Where to send mail	
+#SBATCH --ntasks=8                      # Number of MPI ranks
+#SBATCH --cpus-per-task=4               # Number of cores per MPI rank 
+#SBATCH --nodes=2                       # Number of nodes
+#SBATCH --ntasks-per-node=4             # How many tasks on each node
+#SBATCH --ntasks-per-socket=2           # How many tasks on each CPU or socket
+#SBATCH --mem-per-cpu=100mb             # Memory per core
+#SBATCH --time=00:05:00                 # Time limit hrs:min:sec
+#SBATCH --output=hybrid_test_%j.log     # Standard output and error log
+pwd; hostname; date
+ 
+module load  intel/2018.1.163  openmpi/3.0.0 raxml/8.2.12
+ 
+srun --mpi=pmix_v1 raxmlHPC-HYBRID-SSE3 -T $SLURM_CPUS_PER_TASK \
+      -f a -m GTRGAMMA -s /data/training/SLURM/dna.phy -p $RANDOM \
+      -x $RANDOM -N 500 -n dna
+ 
+date
+```
+
+The following example requests 8 tasks, each with 8 cores. It further specifies that these should be split evenly on 4 nodes, and within the nodes, the 2 tasks should be split, one on each of the two sockets. So each CPU on the two nodes will have 1 task, each with 8 cores. The distribution option will ensure that MPI ranks are distributed cyclically on nodes and sockets.
+
+Also note setting OMP\_NUM\_THREADS so that OpenMP knows how many threads to use per task.
+
+``` {}
+#!/bin/bash
+#SBATCH --job-name=LAMMPS
+#SBATCH --output=LAMMPS_%j.out
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=<email_address>
+#SBATCH --nodes=4              # Number of nodes
+#SBATCH --ntasks=8             # Number of MPI ranks
+#SBATCH --ntasks-per-node=2    # Number of MPI ranks per node
+#SBATCH --ntasks-per-socket=1  # Number of tasks per processor socket on the node
+#SBATCH --cpus-per-task=8      # Number of OpenMP threads for each MPI process/rank
+#SBATCH --mem-per-cpu=2000mb   # Per processor memory request
+#SBATCH --time=4-00:00:00      # Walltime in hh:mm:ss or d-hh:mm:ss
+date;hostname;pwd
+
+module load intel/2018 openmpi/3.1.0
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+
+srun --mpi=pmi_v1 /path/to/app/lmp_gator2 < in.Cu.v.24nm.eq_xrd
+
+date
+```
+
+* Note that MPI gets -np from SLURM automatically.
+* Note there are many directives available to control processor layout.
+* Some to pay particular attention to are:
+         +   --nodes if you care exactly how many nodes are used
+         +  --ntasks-per-node to limit number of tasks on a node
+         +   --distribution one of several directives (see also --contiguous, --cores-per-socket, --mem_bind, --ntasks-per-socket, --sockets-per-node) to control how tasks, cores and memory are distributed among nodes, sockets and cores. While SLURM will generally make appropriate decisions for setting up jobs, careful use of these directives can significantly enhance job performance and users are encouraged to profile application performance under different conditions.
+
+You can have more information on SLURM, another resource manager, on <https://slurm.schedmd.com/quickstart.html> or <https://help.rc.ufl.edu/doc/Sample_SLURM_Scripts>.
