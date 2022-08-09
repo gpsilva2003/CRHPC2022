@@ -8,4 +8,4 @@ mkdir bin
 make
 cd bin/
 mpirun -np 2 mpi_simples
-``
+```
