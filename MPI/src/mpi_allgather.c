@@ -27,16 +27,16 @@ float media, media_local ;
    /* Imprime a soma e média dos números aleatórios em cada processo */
    printf("Soma local para o processo %d - %f, media local = %f\n", meu_ranque, soma_local, soma_local / NELEM);
    /* Coleta todas as médias parciais de todos os processos */
-  medias_parc = (float*)malloc(sizeof(float) * num_procs);
-  MPI_Allgather(&media_local, 1, MPI_FLOAT, medias_parc, 1, MPI_FLOAT, MPI_COMM_WORLD);
+   medias_parc = (float*)malloc(sizeof(float) * num_procs);
+   MPI_Allgather(&media_local, 1, MPI_FLOAT, medias_parc, 1, MPI_FLOAT, MPI_COMM_WORLD);
   /* Calcula a média total de todos os números. */
-  for (i = 0; i < num_procs; i++) 
+   for (i = 0; i < num_procs; i++) 
         soma_medias += medias_parc[i];
-  media = soma_medias / num_procs;
-  printf("Média de todos os elementos calculada no processo %d é  %f\n", meu_ranque, media);
-  /* Libera espaço alocado  */
-  free(medias_parc);
-  free(sub_nums_aleat);
-  MPI_Finalize();
-  return(0);
+   media = soma_medias / num_procs;
+   printf("Média de todos os elementos calculada no processo %d é  %f\n", meu_ranque, media);
+   /* Libera espaço alocado  */
+   free(medias_parc);
+   free(sub_nums_aleat);
+   MPI_Finalize();
+   return(0);
 }
