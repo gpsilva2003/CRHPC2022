@@ -21,7 +21,7 @@ MPI_Status estado;
     /* Processo com ranque 0 recebe num_procs-1 mensagens */
     else {
         for (origem = 1; origem < num_procs; origem++) {
-            MPI_Recv(mensagem, 200, MPI_CHAR, origem, etiq, MPI_COMM_WORLD, &estado);
+            MPI_Recv(mensagem, 200, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &estado);
     /* Imprime as mensagens recebidas */
             printf("%s\n",mensagem); 
         }

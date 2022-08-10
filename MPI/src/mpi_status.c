@@ -21,7 +21,7 @@ MPI_Status estado;
     else 
         if (meu_ranque == destino) {
     /* Recebe no máximo MAX números do processo 0 */
-            MPI_Recv(numeros, MAX, MPI_INT, origem, etiq, MPI_COMM_WORLD, &estado);
+            MPI_Recv(numeros, MAX, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &estado);
     /* Quando chega a mensagem, verifica o status para determinar quantos números foram realmente recebidos */
             MPI_Get_count(&estado, MPI_INT, &total_num);
     /* Imprime a quantidade de números e a informação
